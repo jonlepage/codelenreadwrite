@@ -22,7 +22,8 @@ class PropertyReadWriteCodeLensProvider {
 		}
 
 		// Regex pour détecter les classes et leurs champs d'instance
-		const classRegex = /class\s+\w+\s*\{([\s\S]*?)\}/g;
+		// Gère tous les patterns: class Foo {}, class Foo extends Bar {}, class Foo implements Bar {}, avec génériques, décorateurs, etc.
+		const classRegex = /class\s+\w+[^{]*\{([\s\S]*?)\}/g;
 		let classMatch;
 		while ((classMatch = classRegex.exec(text)) !== null) {
 			// Vérifie l'annulation entre chaque classe
@@ -36,7 +37,8 @@ class PropertyReadWriteCodeLensProvider {
 
 			// Regex pour détecter les champs d'instance dans le corps de la classe
 			// Gère JS: a = 5; et TS: a:number = 5; a?:number = 5; abstract a:number; etc.
-			const fieldRegex = /(?:(?:public|private|protected|readonly|static|abstract)\s+)*(\w+)(?:\?\s*)?(?:\s*:\s*[^=;]+)?(?:\s*=\s*[^;]+)?;/g;
+			const fieldRegex =
+				/(?:(?:public|private|protected|readonly|static|abstract)\s+)*(\w+)(?:\?\s*)?(?:\s*:\s*[^=;]+)?(?:\s*=\s*[^;]+)?;/g;
 			let fieldMatch;
 			while ((fieldMatch = fieldRegex.exec(classBody)) !== null) {
 				// Vérifie l'annulation entre chaque champ
@@ -58,7 +60,7 @@ class PropertyReadWriteCodeLensProvider {
 						doc.uri,
 						start
 					);
-					
+
 					// Vérifie l'annulation après l'appel async
 					if (token.isCancellationRequested) {
 						return lenses;
@@ -131,7 +133,7 @@ class PropertyReadWriteCodeLensProvider {
 					}
 				} catch (error) {
 					// Log l'erreur mais continue le traitement
-					console.error('Erreur lors du traitement des références:', error);
+					console.error("Erreur lors du traitement des références:", error);
 					continue;
 				}
 			}
@@ -160,7 +162,11 @@ function activate(context) {
 			"propertyReadWriteCodelens.showReads",
 			async (uri, position, type, references) => {
 				try {
-					if (references && Array.isArray(references) && references.length > 0) {
+					if (
+						references &&
+						Array.isArray(references) &&
+						references.length > 0
+					) {
 						await vscode.commands.executeCommand(
 							"editor.action.peekLocations",
 							uri,
@@ -170,8 +176,10 @@ function activate(context) {
 						);
 					}
 				} catch (error) {
-					console.error('Erreur lors de l\'affichage des lectures:', error);
-					vscode.window.showErrorMessage('Impossible d\'afficher les références de lecture');
+					console.error("Erreur lors de l'affichage des lectures:", error);
+					vscode.window.showErrorMessage(
+						"Impossible d'afficher les références de lecture"
+					);
 				}
 			}
 		),
@@ -181,7 +189,11 @@ function activate(context) {
 			"propertyReadWriteCodelens.showWrites",
 			async (uri, position, type, references) => {
 				try {
-					if (references && Array.isArray(references) && references.length > 0) {
+					if (
+						references &&
+						Array.isArray(references) &&
+						references.length > 0
+					) {
 						await vscode.commands.executeCommand(
 							"editor.action.peekLocations",
 							uri,
@@ -191,8 +203,10 @@ function activate(context) {
 						);
 					}
 				} catch (error) {
-					console.error('Erreur lors de l\'affichage des écritures:', error);
-					vscode.window.showErrorMessage('Impossible d\'afficher les références d\'écriture');
+					console.error("Erreur lors de l'affichage des écritures:", error);
+					vscode.window.showErrorMessage(
+						"Impossible d'afficher les références d'écriture"
+					);
 				}
 			}
 		)

@@ -43,5 +43,8 @@
       }
     ]
   },
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "build": "vsce package"
+  }
 }
