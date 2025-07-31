@@ -1,0 +1,19 @@
+{
+    "contributes": {
+        "configuration": {
+            "title": "Property Read Write CodeLens",
+            "properties": {
+                "propertyReadWriteCodelens.readEmoji": {
+                    "type": "string",
+                    "default": "📖",
+                    "description": "Emoji to use for read references in CodeLens."
+                },
+                "propertyReadWriteCodelens.writeEmoji": {
+                    "type": "string",
+                    "default": "✏️",
+                    "description": "Emoji to use for write references in CodeLens."
+                }
+            }
+        }
+    }
+}

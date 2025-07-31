@@ -3,11 +3,21 @@ const vscode = require("vscode");
 const outputChannel = vscode.window.createOutputChannel("Property Read Write CodeLens");
 
 class PropertyReadWriteCodeLensProvider {
-	constructor() {
-		this.onDidChangeEmitter = new vscode.EventEmitter();
-		// Cache pour les documents ouverts lors d'une session CodeLens
-		this.documentCache = new Map();
-	}
+	   constructor() {
+			   this.onDidChangeEmitter = new vscode.EventEmitter();
+			   // Cache pour les documents ouverts lors d'une session CodeLens
+			   this.documentCache = new Map();
+	   }
+
+	   // Récupère les emojis et affixes personnalisés depuis la configuration utilisateur
+	   getConfig() {
+			   const config = vscode.workspace.getConfiguration('propertyReadWriteCodelens');
+			   const readEmoji = config.get('readEmoji', '📖');
+			   const writeEmoji = config.get('writeEmoji', '✏️');
+			   const readAffix = config.get('readAffix', 'reads');
+			   const writeAffix = config.get('writeAffix', 'writes');
+			   return { readEmoji, writeEmoji, readAffix, writeAffix };
+	   }
 	get onDidChangeCodeLenses() {
 		return this.onDidChangeEmitter.event;
 	}
@@ -16,7 +26,7 @@ class PropertyReadWriteCodeLensProvider {
 	}
 
 	// Utilise l'API Document Symbols de VS Code pour une analyse précise
-async provideCodeLenses(doc, token) {
+	async provideCodeLenses(doc, token) {
 		const lenses = [];
 		this.documentCache.clear();
 		this.documentCache.set(doc.uri.toString(), doc);
@@ -235,10 +245,12 @@ async provideCodeLenses(doc, token) {
 
 			
 
+			// Utilise les emojis et affixes personnalisés
+			const { readEmoji, writeEmoji, readAffix, writeAffix } = this.getConfig();
 			// Ajoute les CodeLens
 			if (reads > 0) {
 				lenses.push(new vscode.CodeLens(range, {
-					title: `📖 ${reads} reads`,
+					title: `${readEmoji} ${reads} ${readAffix}`,
 					command: "propertyReadWriteCodelens.showReads",
 					arguments: [doc.uri, range.start, "reads", readRefs],
 				}));
@@ -246,7 +258,7 @@ async provideCodeLenses(doc, token) {
 
 			if (writes > 0) {
 				lenses.push(new vscode.CodeLens(range, {
-					title: `✏️ ${writes} writes`,
+					title: `${writeEmoji} ${writes} ${writeAffix}`,
 					command: "propertyReadWriteCodelens.showWrites", 
 					arguments: [doc.uri, range.start, "writes", writeRefs],
 				}));
@@ -309,10 +321,12 @@ async provideCodeLenses(doc, token) {
 				}
 			}
 
+			// Utilise les emojis et affixes personnalisés
+			const { readEmoji, writeEmoji, readAffix, writeAffix } = this.getConfig();
 			// Ajoute les CodeLens
 			if (reads > 0) {
 				lenses.push(new vscode.CodeLens(range, {
-					title: `📖 ${reads} reads`,
+					title: `${readEmoji} ${reads} ${readAffix}`,
 					command: "propertyReadWriteCodelens.showReads",
 					arguments: [doc.uri, range.start, "reads", readRefs],
 				}));
@@ -320,7 +334,7 @@ async provideCodeLenses(doc, token) {
 
 			if (writes > 0) {
 				lenses.push(new vscode.CodeLens(range, {
-					title: `✏️ ${writes} writes`,
+					title: `${writeEmoji} ${writes} ${writeAffix}`,
 					command: "propertyReadWriteCodelens.showWrites", 
 					arguments: [doc.uri, range.start, "writes", writeRefs],
 				}));
@@ -392,76 +406,84 @@ async provideCodeLenses(doc, token) {
 	}
 }
 
+
 function activate(context) {
-	outputChannel.appendLine('[CodeLens] Extension Property Read Write CodeLens activée !');
-	const provider = new PropertyReadWriteCodeLensProvider();
-	const codeLensDisposable = vscode.languages.registerCodeLensProvider(
-		[
-			{ language: "javascript", scheme: "file" },
-			{ language: "typescript", scheme: "file" },
-		],
-		provider
-	);
-	context.subscriptions.push(
-		codeLensDisposable,
-		vscode.commands.registerCommand("propertyReadWriteCodelens.refresh", () =>
-			provider.refresh()
-		),
-		// Commande pour afficher uniquement les lectures
-		vscode.commands.registerCommand(
-			"propertyReadWriteCodelens.showReads",
-			async (uri, position, type, references) => {
-				try {
-					if (
-						references &&
-						Array.isArray(references) &&
-						references.length > 0
-					) {
-						await vscode.commands.executeCommand(
-							"editor.action.peekLocations",
-							uri,
-							position,
-							references,
-							"peek"
-						);
-					}
-				} catch (error) {
-					outputChannel.appendLine("Erreur lors de l'affichage des lectures: " + error?.message);
-					outputChannel.appendLine(error?.stack || String(error));
-					vscode.window.showErrorMessage(
-						"Impossible d'afficher les références de lecture"
-					);
-				}
-			}
-		),
-		// Commande pour afficher uniquement les écritures
-		vscode.commands.registerCommand(
-			"propertyReadWriteCodelens.showWrites",
-			async (uri, position, type, references) => {
-				try {
-					if (
-						references &&
-						Array.isArray(references) &&
-						references.length > 0
-					) {
-						await vscode.commands.executeCommand(
-							"editor.action.peekLocations",
-							uri,
-							position,
-							references,
-							"peek"
-						);
-					}
-				} catch (error) {
-					outputChannel.appendLine("Erreur lors de l'affichage des écritures: " + error?.message);
-					outputChannel.appendLine(error?.stack || String(error));
-					vscode.window.showErrorMessage(
-						"Impossible d'afficher les références d'écriture"
-					);
-				}
-			}
-		)
-	);
+	   outputChannel.appendLine('[CodeLens] Extension Property Read Write CodeLens activée !');
+	   const provider = new PropertyReadWriteCodeLensProvider();
+	   const codeLensDisposable = vscode.languages.registerCodeLensProvider(
+			   [
+					   { language: "javascript", scheme: "file" },
+					   { language: "typescript", scheme: "file" },
+			   ],
+			   provider
+	   );
+	   // Rafraîchir les CodeLens si la configuration change (emoji)
+	   const configDisposable = vscode.workspace.onDidChangeConfiguration(e => {
+			   if (e.affectsConfiguration('propertyReadWriteCodelens.readEmoji') || e.affectsConfiguration('propertyReadWriteCodelens.writeEmoji')) {
+					   provider.refresh();
+			   }
+	   });
+	   context.subscriptions.push(
+			   codeLensDisposable,
+			   configDisposable,
+			   vscode.commands.registerCommand("propertyReadWriteCodelens.refresh", () =>
+					   provider.refresh()
+			   ),
+			   // Commande pour afficher uniquement les lectures
+			   vscode.commands.registerCommand(
+					   "propertyReadWriteCodelens.showReads",
+					   async (uri, position, type, references) => {
+							   try {
+									   if (
+											   references &&
+											   Array.isArray(references) &&
+											   references.length > 0
+									   ) {
+											   await vscode.commands.executeCommand(
+													   "editor.action.peekLocations",
+													   uri,
+													   position,
+													   references,
+													   "peek"
+											   );
+									   }
+							   } catch (error) {
+									   outputChannel.appendLine("Erreur lors de l'affichage des lectures: " + error?.message);
+									   outputChannel.appendLine(error?.stack || String(error));
+									   vscode.window.showErrorMessage(
+											   "Impossible d'afficher les références de lecture"
+									   );
+							   }
+					   }
+			   ),
+			   // Commande pour afficher uniquement les écritures
+			   vscode.commands.registerCommand(
+					   "propertyReadWriteCodelens.showWrites",
+					   async (uri, position, type, references) => {
+							   try {
+									   if (
+											   references &&
+											   Array.isArray(references) &&
+											   references.length > 0
+									   ) {
+											   await vscode.commands.executeCommand(
+													   "editor.action.peekLocations",
+													   uri,
+													   position,
+													   references,
+													   "peek"
+											   );
+									   }
+							   } catch (error) {
+									   outputChannel.appendLine("Erreur lors de l'affichage des écritures: " + error?.message);
+									   outputChannel.appendLine(error?.stack || String(error));
+									   vscode.window.showErrorMessage(
+											   "Impossible d'afficher les références d'écriture"
+									   );
+							   }
+					   }
+			   )
+	   );
 }
 
 module.exports = { activate };

@@ -1,3 +1,9 @@
+# [1.0.6] - 2025-07-31
+
+### Added
+- 🔧 Customizable affixes: you can now set the text after the read/write count (e.g. "lectures", "écritures", "読み取り", "書き込み") in the extension settings.
+- 🖼️ Emojis and affixes are instantly updated in CodeLens when changed in settings.
+
 
 # [1.0.5] - 2025-07-31
 

@@ -3,7 +3,7 @@
   "displayName": "Property Read/Write CodeLens",
   "description": "Displays CodeLens showing read/write counts for class properties in JavaScript and TypeScript",
   "publisher": "Lepasoft",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "repository": {
     "type": "git",
     "url": "https://github.com/jonlepage/codelenreadwrite"
@@ -37,6 +37,31 @@
   ],
   "main": "./propertyReadWriteCodelens.js",
   "contributes": {
+    "configuration": {
+      "title": "Property Read Write CodeLens",
+      "properties": {
+        "propertyReadWriteCodelens.readEmoji": {
+          "type": "string",
+          "default": "📖",
+          "description": "Emoji to use for read references in CodeLens."
+        },
+        "propertyReadWriteCodelens.writeEmoji": {
+          "type": "string",
+          "default": "✏️",
+          "description": "Emoji to use for write references in CodeLens."
+        },
+        "propertyReadWriteCodelens.readAffix": {
+          "type": "string",
+          "default": "reads",
+          "description": "Text/affix to display after the read count (e.g. 'reads', 'lectures', '読み取り')."
+        },
+        "propertyReadWriteCodelens.writeAffix": {
+          "type": "string",
+          "default": "writes",
+          "description": "Text/affix to display after the write count (e.g. 'writes', 'écritures', '書き込み')."
+        }
+      }
+    },
     "commands": [
       {
         "command": "propertyReadWriteCodelens.refresh",
