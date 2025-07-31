@@ -1,0 +1,18 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			// Lance VS Code en mode "Extension Development Host"
+			"name": "Launch Extension",
+			"type": "extensionHost",
+			"request": "launch",
+			"runtimeExecutable": "${execPath}",
+			"args": [
+				"--extensionDevelopmentPath=${workspaceFolder}"
+			],
+			// si vous utilisez JS directement, vous n'avez pas besoin d'outFiles
+			// s'il s'agit de TS compilé, décommentez et ajustez outFiles :
+			// "outFiles": ["${workspaceFolder}/out/**/*.js"]
+		}
+	]
+}

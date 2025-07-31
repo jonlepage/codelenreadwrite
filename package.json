@@ -1,0 +1,45 @@
+{
+  "name": "property-read-write-codelens",
+  "displayName": "Property Read/Write CodeLens",
+  "description": "Displays CodeLens showing read/write counts for class properties in JavaScript and TypeScript",
+  "publisher": "Lepasoft",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/votre-username/property-read-write-codelens"
+  },
+  "bugs": {
+    "url": "https://github.com/votre-username/property-read-write-codelens/issues"
+  },
+  "homepage": "https://github.com/votre-username/property-read-write-codelens",
+  "keywords": [
+    "codelens",
+    "property",
+    "read",
+    "write",
+    "references",
+    "typescript",
+    "javascript",
+    "class"
+  ],
+  "categories": [
+    "Other"
+  ],
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "activationEvents": [
+    "onLanguage:typescript",
+    "onLanguage:javascript"
+  ],
+  "main": "./propertyReadWriteCodelens.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "propertyReadWriteCodelens.refresh",
+        "title": "Refresh Property Read/Write CodeLens"
+      }
+    ]
+  },
+  "license": "MIT"
+}
