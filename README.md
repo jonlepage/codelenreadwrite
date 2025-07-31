@@ -11,7 +11,7 @@ A VS Code extension that displays CodeLens on class properties, showing the numb
 
 ## 📸 Preview
 
-![Usage Example](https://via.placeholder.com/600x300/007ACC/FFFFFF?text=Property+CodeLens+Example)
+![Usage Example](./preview.JPG)
 
 ## 🎯 Supported Syntaxes
 
