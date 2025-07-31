@@ -3,7 +3,7 @@
   "displayName": "Property Read/Write CodeLens",
   "description": "Displays CodeLens showing read/write counts for class properties in JavaScript and TypeScript",
   "publisher": "Lepasoft",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/jonlepage/codelenreadwrite"
