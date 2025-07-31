@@ -1,3 +1,17 @@
+
+# [1.0.5] - 2025-07-31
+
+### Added
+- 🪵 New VS Code OutputChannel: all crashes, errors, and critical logs are now visible in the "Output" panel.
+- 🛡️ Improved robustness: all errors are logged to the VS Code output for easier debugging.
+- 🚦 Extension activation log to verify successful loading.
+
+### Changed
+- 🔇 Removed unnecessary console logs for better performance and a cleaner user experience.
+
+### Fixed
+- 🐞 Internal properties of anonymous instantiated classes are now correctly detected and receive a CodeLens, just like in the VS Code symbol palette.
+
 # Changelog
 
 ## [1.0.4] - 2025-07-31
