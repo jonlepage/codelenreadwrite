@@ -3,6 +3,8 @@ const vscode = require("vscode");
 class PropertyReadWriteCodeLensProvider {
 	constructor() {
 		this.onDidChangeEmitter = new vscode.EventEmitter();
+		// Cache pour les documents ouverts lors d'une session CodeLens
+		this.documentCache = new Map();
 	}
 	get onDidChangeCodeLenses() {
 		return this.onDidChangeEmitter.event;
@@ -15,6 +17,10 @@ class PropertyReadWriteCodeLensProvider {
 	async provideCodeLenses(doc, token) {
 		const lenses = [];
 		const text = doc.getText();
+
+		// Réinitialise le cache pour chaque session CodeLens
+		this.documentCache.clear();
+		this.documentCache.set(doc.uri.toString(), doc);
 
 		// Vérifie si l'opération a été annulée
 		if (token.isCancellationRequested) {
@@ -76,37 +82,71 @@ class PropertyReadWriteCodeLensProvider {
 							// Ignore la déclaration elle-même
 							if (
 								ref.range.start.line === start.line &&
-								ref.range.start.character === start.character
+								ref.range.start.character === start.character &&
+								ref.uri.toString() === doc.uri.toString()
 							) {
 								continue;
 							}
 
-							// Analyse le contexte pour déterminer si c'est une lecture ou écriture
-							const refLine = doc.lineAt(ref.range.start.line).text;
-							const refPosition = ref.range.start.character;
+							try {
+								// Utilise le cache ou ouvre le document
+								let refDoc = await this.getDocument(ref.uri);
+								if (!refDoc) {
+									console.warn(
+										`[CodeLens] Document non accessible: ${ref.uri.toString()}`
+									);
+									continue;
+								}
 
-							// Vérifie que la position est valide
-							if (refPosition < 0 || refPosition >= refLine.length) {
+								// Vérifie que la ligne existe dans le document
+								if (
+									ref.range.start.line < 0 ||
+									ref.range.start.line >= refDoc.lineCount
+								) {
+									console.warn(
+										`[CodeLens] Ligne invalide ${
+											ref.range.start.line
+										} dans ${ref.uri.toString()}`
+									);
+									continue;
+								}
+
+								// Analyse le contexte pour déterminer si c'est une lecture ou écriture
+								const refLine = refDoc.lineAt(ref.range.start.line).text;
+								const refPosition = ref.range.start.character;
+
+								// Vérifie que la position est valide
+								if (refPosition < 0 || refPosition >= refLine.length) {
+									console.warn(
+										`[CodeLens] Position invalide ${refPosition} dans ${ref.uri.toString()}`
+									);
+									continue;
+								}
+
+								// Vérifie si c'est une écriture (affectation)
+								const afterProp = refLine
+									.substring(refPosition + propName.length)
+									.trim();
+								const beforeProp = refLine.substring(0, refPosition).trim();
+
+								// Patterns d'écriture: prop = value, prop++, prop--, ++prop, --prop, prop += value, etc.
+								if (
+									afterProp.match(/^(\s*=(?!=)|(\+\+|--|\+=|-=|\*=|\/=|%=))/) ||
+									beforeProp.match(/(\+\+|--)\s*$/) ||
+									refLine.includes(`${propName} =`)
+								) {
+									writes++;
+									writeRefs.push(ref);
+								} else {
+									reads++;
+									readRefs.push(ref);
+								}
+							} catch (error) {
+								console.warn(
+									`[CodeLens] Erreur lors du traitement de la référence:`,
+									error
+								);
 								continue;
-							}
-
-							// Vérifie si c'est une écriture (affectation)
-							const afterProp = refLine
-								.substring(refPosition + propName.length)
-								.trim();
-							const beforeProp = refLine.substring(0, refPosition).trim();
-
-							// Patterns d'écriture: prop = value, prop++, prop--, ++prop, --prop, prop += value, etc.
-							if (
-								afterProp.match(/^(\s*=(?!=)|(\+\+|--|\+=|-=|\*=|\/=|%=))/) ||
-								beforeProp.match(/(\+\+|--)\s*$/) ||
-								refLine.includes(`${propName} =`)
-							) {
-								writes++;
-								writeRefs.push(ref);
-							} else {
-								reads++;
-								readRefs.push(ref);
 							}
 						}
 					}
@@ -140,6 +180,38 @@ class PropertyReadWriteCodeLensProvider {
 		}
 
 		return lenses;
+	}
+
+	// Méthode optimisée pour récupérer les documents avec cache
+	async getDocument(uri) {
+		const uriString = uri.toString();
+
+		// Vérifie d'abord le cache
+		if (this.documentCache.has(uriString)) {
+			return this.documentCache.get(uriString);
+		}
+
+		// Vérifie si le document est déjà ouvert dans l'éditeur (plus rapide)
+		const openDoc = vscode.workspace.textDocuments.find(
+			(doc) => doc.uri.toString() === uriString
+		);
+		if (openDoc) {
+			this.documentCache.set(uriString, openDoc);
+			return openDoc;
+		}
+
+		// Sinon, ouvre le document (plus lent)
+		try {
+			const doc = await vscode.workspace.openTextDocument(uri);
+			this.documentCache.set(uriString, doc);
+			return doc;
+		} catch (error) {
+			console.warn(
+				`[CodeLens] Impossible d'ouvrir le document ${uriString}:`,
+				error
+			);
+			return null;
+		}
 	}
 }
 

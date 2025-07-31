@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.4] - 2025-07-31
+
+### Improved
+- 🚀 Major performance improvement: document caching for cross-file references (no more duplicate openTextDocument calls).
+- 🧠 Uses already open documents in the editor when possible (faster, less memory).
+- 🛡️ Robust error handling and logging for invalid lines/positions.
+- ✅ CodeLens now reliably counts reads/writes across all files in the workspace.
+
 ## [1.0.3] - 2025-07-31
 
 ### Changed

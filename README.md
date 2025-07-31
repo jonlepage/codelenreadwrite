@@ -1,6 +1,6 @@
 # Property Read/Write CodeLens
 
-A VS Code extension that displays CodeLens on class properties, showing the number of reads and writes.
+A VS Code extension that displays better CodeLens telemetry on class properties, showing the number of reads and writes.
 
 ## ✨ Features
 
@@ -17,13 +17,15 @@ A VS Code extension that displays CodeLens on class properties, showing the numb
 
 ### TypeScript
 
+The extension supports various TypeScript property declaration syntaxes, including:
 ```typescript
-class MyClass {
+class MyClass extends BaseClass implements Interface {
 	a: number = 5;
 	b?: string = "hello";
 	public readonly c: number = 10;
 	private static d: string;
 	protected abstract e: boolean;
+	f?: string;
 }
 ```
 
@@ -64,4 +66,4 @@ MIT
 
 ---
 
-**Enjoy better visibility of your class properties while coding!** 🎉
+**Enjoy better telemetry of your class properties while coding!** 🎉
