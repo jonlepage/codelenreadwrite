@@ -23,7 +23,7 @@ class PropertyReadWriteCodeLensProvider {
 
 		// Regex pour détecter les classes et leurs champs d'instance
 		// Gère tous les patterns: class Foo {}, class Foo extends Bar {}, class Foo implements Bar {}, avec génériques, décorateurs, etc.
-		const classRegex = /class\s+\w+[^{]*\{([\s\S]*?)\}/g;
+		const classRegex = /class\s+[\w$]+[^{]*\{([\s\S]*?)\}/g;
 		let classMatch;
 		while ((classMatch = classRegex.exec(text)) !== null) {
 			// Vérifie l'annulation entre chaque classe

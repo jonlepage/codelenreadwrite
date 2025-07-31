@@ -1,26 +1,31 @@
 # Changelog
 
+## [1.0.3] - 2025-07-31
+
+### Changed
+- 🔧 The regex for detecting classes has been updated to include names containing the `$` character. This allows handling cases like `class $App` correctly.
+
 ## [1.0.0] - 2025-07-31
 
-### Ajouté
-- ✨ CodeLens pour afficher le nombre de lectures/écritures des propriétés de classe
-- 🔍 Navigation vers les références filtrées par type (lecture/écriture)
-- 📖 Support complet JavaScript et TypeScript
-- 🎯 Gestion des modificateurs TypeScript (public, private, protected, readonly, static, abstract)
-- 🛡️ Gestion des propriétés optionnelles (`prop?: type`)
-- ⚡ Optimisations de performance avec gestion du CancellationToken
-- 🐛 Gestion robuste des erreurs
+### Added
+- ✨ CodeLens to display the number of reads/writes for class properties
+- 🔍 Navigation to references filtered by type (read/write)
+- 📖 Full support for JavaScript and TypeScript
+- 🎯 Handling of TypeScript modifiers (public, private, protected, readonly, static, abstract)
+- 🛡️ Support for optional properties (`prop?: type`)
+- ⚡ Performance optimizations with CancellationToken management
+- 🐛 Robust error handling
 
-### Fonctionnalités
-- Support des syntaxes :
-  - JavaScript : `a = 5;`
-  - TypeScript : `a: number = 5;`, `a?: string;`, `public readonly b: number;`
-- CodeLens cliquables pour filtrer les références
-- Détection intelligente des lectures vs écritures
-- Interface utilisateur intuitive avec icônes 📖 et ✏️
+### Features
+- Syntax support:
+  - JavaScript: `a = 5;`
+  - TypeScript: `a: number = 5;`, `a?: string;`, `public readonly b: number;`
+- Clickable CodeLens to filter references
+- Intelligent detection of reads vs writes
+- Intuitive user interface with 📖 and ✏️ icons
 
-### Technique
-- Regex optimisée pour la détection des propriétés
-- Gestion des annulations pour de meilleures performances
-- Validation des données et gestion d'erreurs
-- Code propre et maintenable
+### Technical
+- Optimized regex for property detection
+- Cancellation management for better performance
+- Data validation and error handling
+- Clean and maintainable code
