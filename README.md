@@ -1,75 +1,67 @@
 # Property Read/Write CodeLens
 
-Une extension VS Code qui affiche des CodeLens sur les propriétés de classe, montrant le nombre de lectures et d'écritures.
+A VS Code extension that displays CodeLens on class properties, showing the number of reads and writes.
 
-## ✨ Fonctionnalités
+## ✨ Features
 
-- **📖 Comptage des lectures** : Affiche le nombre de fois qu'une propriété est lue
-- **✏️ Comptage des écritures** : Affiche le nombre de fois qu'une propriété est modifiée
-- **🔍 Navigation rapide** : Cliquez sur les CodeLens pour voir les références filtrées
-- **🚀 Support complet** : JavaScript et TypeScript (avec types, modificateurs, etc.)
+- **📖 Read count**: Shows how many times a property is read
+- **✏️ Write count**: Shows how many times a property is written
+- **🔍 Quick navigation**: Click on the CodeLens to see filtered references
+- **🚀 Full support**: JavaScript and TypeScript (with types, modifiers, etc.)
 
-## 📸 Aperçu
+## 📸 Preview
 
-![Exemple d'utilisation](https://via.placeholder.com/600x300/007ACC/FFFFFF?text=Property+CodeLens+Example)
+![Usage Example](https://via.placeholder.com/600x300/007ACC/FFFFFF?text=Property+CodeLens+Example)
 
-## 🎯 Syntaxes supportées
-
-### JavaScript
-```javascript
-class MyClass {
-    a = 5;
-    b = "hello";
-}
-```
+## 🎯 Supported Syntaxes
 
 ### TypeScript
+
 ```typescript
 class MyClass {
-    a: number = 5;
-    b?: string = "hello";
-    public readonly c: number = 10;
-    private static d: string;
-    protected abstract e: boolean;
+	a: number = 5;
+	b?: string = "hello";
+	public readonly c: number = 10;
+	private static d: string;
+	protected abstract e: boolean;
 }
 ```
 
 ## 🚀 Installation
 
-1. Ouvrez VS Code
-2. Allez dans l'onglet Extensions (Ctrl+Shift+X)
-3. Recherchez "Property Read/Write CodeLens"
-4. Cliquez sur "Installer"
+1. Open VS Code
+2. Go to the Extensions tab (Ctrl+Shift+X)
+3. Search for "Property Read/Write CodeLens"
+4. Click "Install"
 
-## 📝 Utilisation
+## 📝 Usage
 
-1. Ouvrez un fichier JavaScript ou TypeScript contenant des classes
-2. Les CodeLens apparaîtront automatiquement sur les propriétés de classe
-3. Cliquez sur "📖 X reads" pour voir uniquement les lectures
-4. Cliquez sur "✏️ X writes" pour voir uniquement les écritures
+1. Open a JavaScript or TypeScript file containing classes
+2. CodeLens will automatically appear on class properties
+3. Click on "📖 X reads" to see only read references
+4. Click on "✏️ X writes" to see only write references
 
 ## ⚙️ Configuration
 
-Aucune configuration requise ! L'extension fonctionne automatiquement.
+No configuration required! The extension works automatically.
 
-## 🐛 Problèmes connus
+## 🐛 Known Issues
 
-- Fonctionne uniquement avec les propriétés de classe (pas les méthodes)
-- Nécessite que le fichier soit analysable par VS Code
+- no yet known issues
 
-## 🤝 Contribution
+## 🤝 Contributing
 
-Les contributions sont les bienvenues ! N'hésitez pas à ouvrir des issues ou des pull requests.
+Contributions are welcome! Feel free to open issues or pull requests.
 
-## 📄 Licence
+## 📄 License
 
 MIT
 
-## 🔗 Liens
+## 🔗 Links
 
-- [Repository GitHub](https://github.com/votre-username/property-read-write-codelens)
-- [Signaler un bug](https://github.com/votre-username/property-read-write-codelens/issues)
+- [GitHub Repository](https://github.com/votre-username/property-read-write-codelens)
+- [Report a bug](https://github.com/votre-username/property-read-write-codelens/issues)
 
 ---
 
-**Profitez du développement avec une meilleure visibilité de vos propriétés !** 🎉
+**Enjoy better visibility of your class properties while coding!** 🎉
