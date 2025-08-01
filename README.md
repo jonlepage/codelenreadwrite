@@ -36,10 +36,14 @@ The extension works out of the box. Optional settings are available to customize
 
 Contributions are welcome! Open an issue or submit a pull request on GitHub.
 
+## Changelog
+
+see [CHANGELOG.md](CHANGELOG.md)
+
+## TODO:
+- Add support for more options with regex for complex properties assignments ex:  `entity.set({property: value })` as writes references.
 ## License
 
 MIT
 
-## Changelog
 
-see [CHANGELOG.md](CHANGELOG.md)
