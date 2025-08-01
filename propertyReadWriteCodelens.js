@@ -16,7 +16,9 @@ class PropertyReadWriteCodeLensProvider {
 			   const writeEmoji = config.get('writeEmoji', '✏️');
 			   const readAffix = config.get('readAffix', 'reads');
 			   const writeAffix = config.get('writeAffix', 'writes');
-			   return { readEmoji, writeEmoji, readAffix, writeAffix };
+			   const showReads = config.get('showReads', true);
+			   const showWrites = config.get('showWrites', true);
+			   return { readEmoji, writeEmoji, readAffix, writeAffix, showReads, showWrites };
 	   }
 	get onDidChangeCodeLenses() {
 		return this.onDidChangeEmitter.event;
@@ -246,9 +248,9 @@ class PropertyReadWriteCodeLensProvider {
 			
 
 			// Utilise les emojis et affixes personnalisés
-			const { readEmoji, writeEmoji, readAffix, writeAffix } = this.getConfig();
+			const { readEmoji, writeEmoji, readAffix, writeAffix, showReads, showWrites } = this.getConfig();
 			// Ajoute les CodeLens
-			if (reads > 0) {
+			if (reads > 0 && showReads) {
 				lenses.push(new vscode.CodeLens(range, {
 					title: `${readEmoji} ${reads} ${readAffix}`,
 					command: "propertyReadWriteCodelens.showReads",
@@ -256,7 +258,7 @@ class PropertyReadWriteCodeLensProvider {
 				}));
 			}
 
-			if (writes > 0) {
+			if (writes > 0 && showWrites) {
 				lenses.push(new vscode.CodeLens(range, {
 					title: `${writeEmoji} ${writes} ${writeAffix}`,
 					command: "propertyReadWriteCodelens.showWrites", 
@@ -322,9 +324,9 @@ class PropertyReadWriteCodeLensProvider {
 			}
 
 			// Utilise les emojis et affixes personnalisés
-			const { readEmoji, writeEmoji, readAffix, writeAffix } = this.getConfig();
+			const { readEmoji, writeEmoji, readAffix, writeAffix, showReads, showWrites } = this.getConfig();
 			// Ajoute les CodeLens
-			if (reads > 0) {
+			if (reads > 0 && showReads) {
 				lenses.push(new vscode.CodeLens(range, {
 					title: `${readEmoji} ${reads} ${readAffix}`,
 					command: "propertyReadWriteCodelens.showReads",
@@ -332,7 +334,7 @@ class PropertyReadWriteCodeLensProvider {
 				}));
 			}
 
-			if (writes > 0) {
+			if (writes > 0 && showWrites) {
 				lenses.push(new vscode.CodeLens(range, {
 					title: `${writeEmoji} ${writes} ${writeAffix}`,
 					command: "propertyReadWriteCodelens.showWrites", 

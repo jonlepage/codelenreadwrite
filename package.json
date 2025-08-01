@@ -59,6 +59,16 @@
           "type": "string",
           "default": "writes",
           "description": "Text/affix to display after the write count (e.g. 'writes', 'écritures', '書き込み')."
+        },
+        "propertyReadWriteCodelens.showReads": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable or disable the display of read references in CodeLens."
+        },
+        "propertyReadWriteCodelens.showWrites": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable or disable the display of write references in CodeLens."
         }
       }
     },
