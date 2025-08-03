@@ -46,11 +46,13 @@ Contributions are welcome! Open an issue or submit a pull request on GitHub.
 see [CHANGELOG.md](CHANGELOG.md)
 
 ## TODO:
-- Add support for more options with regex for complex properties assignments ex:  `entity.set({property: value })` as writes references.
+- Add support for more options with regex for complex properties assignments ex:  `entity.set( componentType, {property: value } )` as writes references.
 this can prove very useful in architectures such as ECS, in game engines where coupling occurs through facades.
-For now, this type of designation is considered a read operation.
+For now, the 'property' type is considered a read operation.
 Users will be allowed to add a special regex to detect this type of assignment as a write operation.
-
+- Fix the self field counting when used with access modifiers such as public, private, or protected.
+- add flag to show rwcodelens on literals objects.
+- add flag to enable rwcodelens on interfaces.
 ## License
 
 MIT
