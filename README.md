@@ -53,6 +53,7 @@ Users will be allowed to add a special regex to detect this type of assignment a
 - Fix the self field counting when used with access modifiers such as public, private, or protected.
 - add flag to show rwcodelens on literals objects.
 - add flag to enable rwcodelens on interfaces.
+- when using this in constructor, it should not show rwcodelens.
 ## License
 
 MIT
